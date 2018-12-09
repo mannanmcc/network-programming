@@ -20,11 +20,16 @@ func main() {
 			log.Fatal(err)
 		}
 		//let's print whatever is sent from client using io.copy
-		n, err := io.Copy(os.Stderr, conn)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		log.Fatal("Copied %d bytes", n)
+		go handleClientRequest(conn)
 	}
+
+}
+
+func handleClientRequest(conn net.Conn) {
+	n, err := io.Copy(os.Stderr, conn)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	log.Printf("Copied %d bytes", n)
 }
